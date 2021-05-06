@@ -1,29 +1,38 @@
-version: '3'
+version: '3.1'
 services:
   db:
-    image: 'postgres:alpine'
-    ports:
-      - '5432:5432'
+    image: 'postgres'
     environment:
       POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'platzi'
-      POSTGRES_DB: 'platzi-market'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'db-app-market'
     volumes:
       - db-data:/var/lib/postgresql/data/
-      # - ./db:/docker-entrypoint-initdb.d
+    ports:
+      - '5432:5432'
+    networks:
+      - postgres
+    restart: unless-stopped
 
   pgadmin:
     image: dpage/pgadmin4:4.22
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_LISTEN_PORT: 80
-    ports:
-      - '64374:80'
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+        - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - '1234:80'
+    networks:
+      - postgres
+    restart: unless-stopped
     depends_on:
       - db
+
+networks:
+  postgres:
+    driver: bridge
 
 volumes:
   db-data:
