@@ -7,6 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
 import javax.persistence.GenerationType;
 import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+
+
 
 @Entity
 @Table(name = "compras")
@@ -31,6 +37,13 @@ public class Purchase {
 
     @Column(name = "estado")
     private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
+    private Client client;
+
+    @OneToMany(mappedBy = "product")
+    private List<PurchaseProduct> products;
 
     public Integer getPurchaseId() {
         return purchaseId;

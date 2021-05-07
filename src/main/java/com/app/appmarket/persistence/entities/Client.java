@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
 @Table(name = "clientes")
@@ -27,6 +30,9 @@ public class Client {
 
     @Column(name = "correo_electronico")
     private String email;
+
+    @OneToMany(mappedBy = "client")
+    private List<Purchase> purchases;
 
     public String getClientId() {
         return clientId;
